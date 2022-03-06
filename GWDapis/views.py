@@ -32,7 +32,7 @@ def get_water_levels(request: Request, district_name, mandal_name):
     mandal_waterlevel_info = get_water_levels_impl(mandal_name)
     return JsonResponse(mandal_waterlevel_info)
 
-def get_water_quality(request: Request, mandal_name):
+def get_water_quality(request: Request, district_name, mandal_name):
     mandal_water_quality_info = get_water_quality_impl(mandal_name)
     return JsonResponse(mandal_water_quality_info)
 
