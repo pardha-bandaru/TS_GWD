@@ -69,12 +69,12 @@ def get_water_levels_impl(mandal_name):
         "WellNo", "Northing", "Easting"
     )
     mandal_wells_list = list(set([(mandal_well[0], float(mandal_well[1]), float(mandal_well[2])) for mandal_well in mandal_wells_list]))
-    mandal_water_level = {}
+    mandal_water_level = []
     for well_id, latitude, longitude in mandal_wells_list:
-        mandal_water_level[well_id] = []
         # for water_level_detail in WaterLevels.objects.filter(WellNo=well_id):
         water_level_detail = WaterLevels.objects.filter(WellNo=well_id).last()
         water_level_detail_dict = {
+                "wellName": well_id,
                 "date": water_level_detail.date,
                 "time": water_level_detail.time,
                 "Water_Level": water_level_detail.Water_Level,
@@ -84,7 +84,7 @@ def get_water_levels_impl(mandal_name):
                 },
                 "Water_Level_MBMP": water_level_detail.Water_Level_MBMP,
             }
-        mandal_water_level[well_id].append(water_level_detail_dict)
+        mandal_water_level.append(water_level_detail_dict)
     response = {
         "status": "SUCCESS",
         "status_code": 200,
@@ -98,11 +98,11 @@ def get_water_quality_impl(mandal_name):
         "WellNo", "Northing", "Easting"
     )
     mandal_wells_list = list(set([(mandal_well[0], float(mandal_well[1]), float(mandal_well[2])) for mandal_well in mandal_wells_list]))
-    mandal_water_quality = {}
+    mandal_water_quality = []
     for well_id, latitude, longitude in mandal_wells_list:
-        mandal_water_quality[well_id] = []
         water_quality_detail = WaterQuality.objects.filter(WellNo=well_id).last()
         water_quality_detail_dict = {
+            "wellName": well_id,
             "SampleID": water_quality_detail.SampleID,
             "SamplingDate": water_quality_detail.SamplingDate,
             "location": {
@@ -124,7 +124,7 @@ def get_water_quality_impl(mandal_name):
             "K": water_quality_detail.K,
             "F": water_quality_detail.F,
         }
-        mandal_water_quality[well_id].append(water_quality_detail_dict)
+        mandal_water_quality.append(water_quality_detail_dict)
     response = {
         "status": "SUCCESS",
         "status_code": 200,
