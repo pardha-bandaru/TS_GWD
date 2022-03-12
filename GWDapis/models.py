@@ -1,3 +1,4 @@
+from atexit import register
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -16,8 +17,8 @@ class GW_General(models.Model):
     Minor_Basin = models.CharField(max_length=15, blank=True, null=True)
     Geology = models.CharField(max_length=28, blank=True, null=True)
     Geomorphology = models.CharField(max_length=19, blank=True, null=True)
-    Easting = models.DecimalField(max_digits=8,decimal_places=2, blank=True, null=True)
-    Northing = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    Easting = models.DecimalField(max_digits=8,decimal_places=2, blank=True, null=True) # Longitude
+    Northing = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True) # Latitude
     Command_Area = models.CharField(max_length=5, blank=True, null=True)
     MP = models.CharField(max_length=1, blank=True, null=True)
     DWLR_installed = models.CharField(max_length=5, blank=True, null=True)
@@ -52,3 +53,19 @@ class WaterQuality(models.Model):
     Na  = models.CharField(max_length=8, blank=True, null=True)
     K  = models.CharField(max_length=8, blank=True, null=True)
     F  = models.CharField(max_length=6, blank=True, null=True)
+
+
+class Wells(models.Model):
+    registration_number = models.CharField(primary_key=True, max_length=20)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=8,decimal_places=2, blank=True, null=True) # Easting
+    latitude = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True) # Northing
+    type_of_well = models.CharField(max_length=20, blank=True, null=True)
+    total_depth = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True) # meters
+    created_at = models.DateTimeField(auto_now_add=True)
+    session_id = models.CharField(max_length=20, blank=True, null=True)
+
+class WellDepth(models.Model):
+    registration_number = models.ForeignKey(Wells, on_delete=models.CASCADE)
+    water_depth = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True) # meters
+    created_at = models.DateTimeField(auto_now_add=True)

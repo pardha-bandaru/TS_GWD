@@ -10,4 +10,7 @@ urlpatterns = [
     # path('districts/<str:district_id>/mandals/<str:mandal_id>', views.get_mandals_details, name='get_mandals_details'),
     path('districts/<str:district_name>/mandals/<str:mandal_name>/waterLevels', views.get_water_levels, name='get_water_levels'),
     path('districts/<str:district_name>/mandals/<str:mandal_name>/waterQuality', views.get_water_quality, name='get_water_quality'),
+    path('myWell', views.my_well, name='myWell'),
+    path('registerMobile', views.register_mobile, name='register_mobile'),
+    
 ]
