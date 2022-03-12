@@ -152,8 +152,11 @@ def my_well(request: Request, session):
     if request.method == "POST":
         post_data = request.POST.dict()
         water_depth = post_data.pop("water_depth", None)
-        wells_obj = Wells(**request.POST.dict(), session_id=session)
-        wells_obj.save()
+        try:
+            wells_obj = Wells(**request.POST.dict(), session_id=session)
+            wells_obj.save()
+        except Exception as e:
+            return JsonResponse({"status": "FAILED", "status_code": 422, "message":"Well already exists"}, status=422)
         if water_depth:
             water_depth_obj = WellDepth(registration_number=wells_obj, water_depth=water_depth)
             water_depth_obj.save()
